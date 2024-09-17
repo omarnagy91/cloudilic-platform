@@ -86,7 +86,7 @@ function App() {
     [project, setNodes, onDeleteNode, onRunNode]
   );
 
-  const runFlow = useCallback(() => {
+  const runFlow = useCallback(async () => {
     const nodeMap = new Map(nodes.map((node) => [node.id, node]));
     const edgeMap = new Map(edges.map((edge) => [edge.source, edge.target]));
 
@@ -113,7 +113,9 @@ function App() {
     const startNodes = nodes.filter(
       (node) => !edges.some((edge) => edge.target === node.id)
     );
-    startNodes.forEach((node) => runNode(node.id));
+    for (const node of startNodes) {
+      await runNode(node.id);
+    }
   }, [nodes, edges]);
 
   return (
